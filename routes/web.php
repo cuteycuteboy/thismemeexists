@@ -17,11 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/login', [\App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login_process', [\App\Http\Controllers\AuthController::class, 'login'])->name('login_process');
+Route::middleware("auth:web")->group(function () {
+    Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+});
 
-Route::get('/register', [\App\Http\Controllers\AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register_process', [\App\Http\Controllers\AuthController::class, 'register'])->name('register_process');
+Route::middleware("guest:web")->group(function (){
+    Route::get('/login', [\App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login_process', [\App\Http\Controllers\AuthController::class, 'login'])->name('login_process');
 
-Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+    Route::get('/register', [\App\Http\Controllers\AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register_process', [\App\Http\Controllers\AuthController::class, 'register'])->name('register_process');
+});
+
 
