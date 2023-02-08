@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Actions\AddTemplateAction;
 use App\Http\Requests\NewTemplateForm;
 use App\Models\Template;
 use App\Models\User;
@@ -12,7 +11,7 @@ use Image;
 
 class TemplateController extends Controller
 {
-    public function AddTemplate(NewTemplateForm $request, AddTemplateAction $addTemplateAction)
+    public function AddTemplate(NewTemplateForm $request)
     {    
         $data = $request->validated();
         $template = $request->file('template');
