@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->nullable();
             $table->string('image_path');
-            $table->string('preview_path');
+            $table->string('thumbnail_path');
             $table->timestamps();
         });
     }
