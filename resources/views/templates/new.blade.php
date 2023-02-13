@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'thismemeexists')
+@section('title', 'Добавить свой шаблон')
 
 @section('content')
     @include('partials.header')
