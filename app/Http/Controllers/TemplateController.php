@@ -11,7 +11,7 @@ use Image;
 
 class TemplateController extends Controller
 {
-    public function AddTemplate(NewTemplateForm $request)
+    public function addTemplate(NewTemplateForm $request)
     {    
         $data = $request->validated();
         $template = $request->file('template');
@@ -42,7 +42,7 @@ class TemplateController extends Controller
         
     }
 
-    public function UserTemplates(){
+    public function showUserTemplates(){
         $user_id = auth("web")->user()->id;
 
         $templates = Template::where('user_id', $user_id)->get()->sortBy('id')->reverse();
@@ -54,6 +54,10 @@ class TemplateController extends Controller
         $templates = Template::orderBy('id', 'desc')
         ->paginate(10);
         return view('index')->with('templates', $templates);
+    }
+
+    public function show($id){
+
     }
 
 

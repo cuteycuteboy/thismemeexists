@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [\App\Http\Controllers\TemplateController::class, 'showTemplates'])->name('home');
 
 Route::get('/new_template', [\App\Http\Controllers\TemplateController::class, 'showAddTemplateForm'])->name('new_template');
-Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, 'AddTemplate']);
+Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, 'addTemplate']);
 
 
 Route::middleware("auth:web")->group(function () {
     Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
-    Route::get('/my_templates', [\App\Http\Controllers\TemplateController::class, 'UserTemplates'])->name('my_templates');
+    Route::get('/my_templates', [\App\Http\Controllers\TemplateController::class, 'showUserTemplates'])->name('my_templates');
 });
 
 Route::middleware("guest:web")->group(function (){
