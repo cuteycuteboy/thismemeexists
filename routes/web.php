@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('home');
+Route::get('/', [\App\Http\Controllers\TemplateController::class, 'showTemplates'])->name('home');
 
 Route::get('/new_template', [\App\Http\Controllers\TemplateController::class, 'showAddTemplateForm'])->name('new_template');
 Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, 'AddTemplate']);
@@ -23,6 +21,7 @@ Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, '
 
 Route::middleware("auth:web")->group(function () {
     Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+    Route::get('/my_templates', [\App\Http\Controllers\TemplateController::class, 'UserTemplates'])->name('my_templates');
 });
 
 Route::middleware("guest:web")->group(function (){
