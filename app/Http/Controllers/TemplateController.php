@@ -42,6 +42,21 @@ class TemplateController extends Controller
         
     }
 
+    public function UserTemplates(){
+        $user_id = auth("web")->user()->id;
+
+        $templates = Template::where('user_id', $user_id)->get()->sortBy('id')->reverse();
+        return view('user.templates')->with('templates', $templates);
+    }
+
+    public function showTemplates()
+    {
+        $templates = Template::orderBy('id', 'desc')
+        ->paginate(10);
+        return view('index')->with('templates', $templates);
+    }
+
+
     public function showAddTemplateForm()
     {
         return view("templates.new");
