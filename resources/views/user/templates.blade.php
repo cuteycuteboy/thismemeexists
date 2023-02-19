@@ -9,8 +9,15 @@
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3" id="masonry-container" data-masonry='{"percentPosition": true }' >
           @foreach($templates as $template)
           <div class="col px-5 py-1">
-            <div class="card shadow-sm p-4">
-              <img src="{{ Vite::asset('storage/app/public/templates_thumbnail/'.$template->thumbnail_path) }}">
+            <div class="card shadow-sm px-4">
+            <div class="text-center my-2">
+              <a href="{{ route('template', ['id' => $template->id]) }}">
+                <button type="button" class="btn btn-outline-secondary mx-auto">Создать мем</button>
+              </a>
+              </div>
+              <a href="{{ route('template', ['id' => $template->id]) }}">
+                <img src="{{ Vite::asset('storage/app/public/templates_thumbnail/'.$template->thumbnail_path) }}">
+              </a>
               <div class="card-body">
                 <p class="card-text">Тут должны быть теги, но их нет. Возможно потом реализую, но сейчас лень.</p>
                 <div class="d-flex justify-content-between align-items-center">
