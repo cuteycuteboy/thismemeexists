@@ -56,8 +56,9 @@ class TemplateController extends Controller
         return view('index')->with('templates', $templates);
     }
 
-    public function show($id){
-
+    public function showTemplatePage($id){
+        $template = Template::where('id', $id)->get()->first();
+        return view("templates.view")->with('template', $template);
     }
 
 
