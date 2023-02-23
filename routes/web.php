@@ -18,6 +18,9 @@ Route::get('/', [\App\Http\Controllers\TemplateController::class, 'showTemplates
 Route::get('/new_template', [\App\Http\Controllers\TemplateController::class, 'showAddTemplateForm'])->name('new_template');
 Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, 'addTemplate']);
 
+Route::get('/template/{id}', [\App\Http\Controllers\TemplateController::class, 'showTemplatePage'])->name('template');
+
+Route::get('/preview_meme/{id}', [\App\Http\Controllers\MemeController::class, 'previewMeme'])->name('preview_meme');
 
 Route::middleware("auth:web")->group(function () {
     Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
