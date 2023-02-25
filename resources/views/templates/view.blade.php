@@ -19,7 +19,16 @@
                     <div class="fs-2 my-4">Текст мема</div>
                     <input name="toptext" placeholder="Верхний текст" class="form-control form-control-lg mb-4" type="text" id="toptext">
                     <input name="bottomtext" placeholder="Нижний текст" class="form-control form-control-lg mb-4" type="text" id="bottomtext">
-                    <button type="submit" class="btn btn-primary btn-lg">Подтвердить</button>
+                    <div class="row">
+                        <div class="col col-5">
+                            <button type="submit" class="btn btn-primary btn-lg">Опубликовать</button>
+                        </div>
+                        <div class="col col-5">
+                            <a href="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}" download="" id="download">
+                                <button type="submit" class="btn btn-secondary btn-lg">Скачать</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
         </div>
     </div>
@@ -33,12 +42,12 @@
 </style>
 <script>
 toptext.oninput = function() {
-console.log("топ");
 memeimg.src=memeimg.src.split("?")[0] + "?top_text=" + toptext.value + "&bottom_text=" + bottomtext.value;
+download.setAttribute("href", memeimg.src);
 };
 bottomtext.oninput = function() {
-console.log("бот");
 memeimg.src=memeimg.src.split("?")[0] + "?top_text=" + toptext.value + "&bottom_text=" + bottomtext.value;
+download.setAttribute("href", memeimg.src);
 };
 </script>
 @endsection
