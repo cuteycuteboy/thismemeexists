@@ -46,7 +46,7 @@ class TemplateController extends Controller
         $user_id = auth("web")->user()->id;
 
         $templates = Template::where('user_id', $user_id)->get()->sortBy('id')->reverse();
-        return view('user.templates')->with('templates', $templates);
+        return view('templates.user')->with('templates', $templates);
     }
 
     public function showTemplates()
