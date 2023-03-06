@@ -31,6 +31,8 @@ class MemeGeneratorAction{
 		#imagecolortransparent($this->im, $this->background);
 
 		$this->processImg();
+		
+		return $this->im;
         
     }
 
@@ -202,10 +204,5 @@ class MemeGeneratorAction{
 		if($this->topText != "") {
 		  $this->WorkOnImage($this->topText,30,"top");
 		}
-	
-		header('Content-Type: image/jpeg');
-		imagepng($this->im);
-	
-		imagedestroy($this->im);
 	}
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Template;
+use App\Models\Meme;
 use App\Actions\MemeGeneratorAction;
 use Image;
 use Illuminate\Support\Facades\Storage;
@@ -12,34 +13,46 @@ class MemeController extends Controller
 {
     public function previewMeme($id, Request $request, MemeGeneratorAction $memeGeneratorAction)
     {
-        $topText = $request->get('top_text');
-        $bottomText = $request->get('bottom_text');
+        $topText = $request->input('top_text');
+        $bottomText = $request->input('bottom_text');
         
         $meme = $memeGeneratorAction($id,$topText,$bottomText);
-
-        
-        // $template = Template::where('id', $id)->get()->first();
-
-        // $memePath = public_path('storage/templates/'.$template->image_path);
-        // $im = imagecreatefrompng($memePath);
-        // imagettftext($im, 20, 0, 10, 10, 1, base_path('storage/app/public/impact.ttf'), $topText);
-        // header('Content-Type: image/jpeg');
-		// imagepng($im);
+        header('Content-Type: image/png');
+		imagepng($meme);
 	
-		// imagedestroy($im);
-
-        // $img = Image::make($memePath);
-        
-
-        // // use callback to define details
-        // $img->text('fosdaffffffffo', 0, 0, function($font) {
-        //     $font->file(base_path('storage/app/public/impact.ttf'));
-        //     $font->size(24);
-        //     $font->color('#FFFFFF');
-        //     $font->valign('top');
-        // });
-
-        //return $img->response();
+		imagedestroy($meme);
     }
-    
+
+    public function makeMeme($id, Request $request,MemeGeneratorAction $memeGeneratorAction){
+        $topText = $request->input('top_text');
+        $bottomText = $request->input('bottom_text');
+
+        $meme = $memeGeneratorAction($id,$topText,$bottomText);
+
+        $filenameToStore = uniqid().'.png';
+        $filenameToStoreThumbnail = uniqid().'.png';
+        
+        imagepng($meme, storage_path('app/public/memes/') . $filenameToStore);
+
+        $width = imagesx($meme);
+        $height = imagesy($meme);
+
+        $newWidth = 300;
+        $newHeight = $newWidth*$height/$width;
+
+        $memeThumbnail = imagecreatetruecolor($newWidth, $newHeight);
+
+        imagecopyresized($memeThumbnail, $meme, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+        imagepng($memeThumbnail, storage_path('app/public/memes_thumbnail/') . $filenameToStoreThumbnail);
+
+        $save = new Meme;
+        if (auth("web")->check()){
+            $save->user_id = auth("web")->user()->id;
+        }
+        $save->image_path = $filenameToStore;
+        $save->thumbnail_path = $filenameToStoreThumbnail;
+        $save->template_id = $id;
+        $save->save();
+    }
 }
