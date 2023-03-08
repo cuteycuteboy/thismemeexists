@@ -23,7 +23,8 @@ class MemeController extends Controller
 		imagedestroy($meme);
     }
 
-    public function makeMeme($id, Request $request,MemeGeneratorAction $memeGeneratorAction){
+    public function makeMeme($id, Request $request,MemeGeneratorAction $memeGeneratorAction)
+    {
         $topText = $request->input('top_text');
         $bottomText = $request->input('bottom_text');
 
@@ -54,5 +55,20 @@ class MemeController extends Controller
         $save->thumbnail_path = $filenameToStoreThumbnail;
         $save->template_id = $id;
         $save->save();
+        return redirect()->route('meme', ['id' => $save->id]);
+    }
+
+    public function showUserMemes()
+    {
+        $user_id = auth("web")->user()->id;
+
+        $memes = Meme::where('user_id', $user_id)->get()->sortBy('id')->reverse();
+        return view('memes.user')->with('memes', $memes);
+    }
+
+    public function showMemePage($id)
+    {
+        $meme = Meme::where('id', $id)->get()->first();
+        return view("memes.view")->with('meme', $meme);
     }
 }
