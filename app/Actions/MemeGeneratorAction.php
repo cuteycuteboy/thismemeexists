@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use Illuminate\Support\Facades\Storage;
 use App\Models\Template;
+use Image;
 
 
 class MemeGeneratorAction{
@@ -14,26 +15,23 @@ class MemeGeneratorAction{
 	private $background;
 	private $font;
 	private $im;
-	private $imgSize;
+	private $width;
+	private $height;
 
 	public function __invoke($id,$topText,$bottomText)
 	{
 		$this->setFontPath();
 
 		$path = $this->getImagePath($id);
-		$this->im = $this->ReturnImageFromPath($path);
-		$this->imgSize = getimagesize($path);
+		$this->im = Image::make($path);
+		$this->setImageSize($path);
 
 		$this->setTopText($topText);
 		$this->setBottomText($bottomText);
 
-		$this->background = imagecolorallocate($this->im, 255, 255, 255);
-		#imagecolortransparent($this->im, $this->background);
-
 		$this->processImg();
-		
-		return $this->im;
-        
+
+		return $this->im; 
     }
 
 	private function setFontPath()
@@ -47,34 +45,19 @@ class MemeGeneratorAction{
 		return Storage::path('public/templates/'.$image->image_path);
 	}
 
-	private function returnImageFromPath($path)
-	{
-		$ext = pathinfo($path, PATHINFO_EXTENSION);
-	
-		if ($ext == 'jpg' || $ext == 'jpeg'){
-			return imagecreatefromjpeg($path);
-		}
-		else if ($ext == 'png'){
-		  	return imagecreatefrompng($path);
-		}
-		else if ($ext == 'gif'){
-		  	return imagecreatefromgif($path);
-		}
+	private function setImageSize(){
+		$this->width = $this->im->width();
+		$this->height = $this->im->height();
 	}
 
-	public function setTopText($txt)
+	private function setTopText($txt)
 	{
 		$this->topText = mb_strtoupper($txt);
 	}
 	
-	public function setBottomText($txt)
+	private function setBottomText($txt)
 	{
 		$this->bottomText = mb_strtoupper($txt);
-	}
-
-	private function getHorizontalTextAlignment($imgWidth, $topRightPixelOfText)
-	{
-		return floor(($imgWidth - $topRightPixelOfText) / 2);
 	}
 
 	private function checkTextWidthExceedImage($imgWidth, $textWidth)
@@ -101,33 +84,38 @@ class MemeGeneratorAction{
 		return imagettfbbox($fontSize, 0, $this->font, $text);
 	}
 
-	private function placeTextOnImage($img, $fontsize, $Xlocation, $Textheight, $font, $text)
+	private function placeTextOnImage($fontSize, $Xlocation, $Textheight,$text)
 	{
-		imagettftext($this->im, $fontsize, 0, $Xlocation, $Textheight, $this->background, $font, $text);
+		$this->im->text($text,$Xlocation,$Textheight,function($font) use ($fontSize) {
+			$font->file($this->font);
+			$font->size($fontSize);
+			$font->color('#FFFFFF');
+			$font->align('center');
+			$font->valign('top');
+		});
 	}
 	
-	private function workOnImage($text, $size, $type)
+	private function workOnImage($text,$fontSize,$type)
 	{
 		if ($type == "top") {
 			$textCoordinateY = 35;
 		}
       	else {
-        	$textCoordinateY = $this->imgSize[1] - 20;
+        	$textCoordinateY = $this->height - 20;
 		}
-	
+
+		$textCoordinateX = floor($this->width / 2);
+
 		while (True) {
-		  	//get coordinate for the text
-		  	$coords = $this->getFontPlacementCoordinates($text, $size);
-	
-		  	// place the text in center
-			$textCoordinateX = $this->getHorizontalTextAlignment($this->imgSize[0], $coords[4]);
+		  	// //get coordinate for the text
+		  	$coords = $this->getFontPlacementCoordinates($text, $fontSize);
 	
 		  	//check if the text does not exceed image width if yes then repeat with size = size - 1
-		  	if ($this->checkTextWidthExceedImage($this->imgSize[0], $coords[2] - $coords[0])) {
+		  	if ($this->checkTextWidthExceedImage($this->width, $coords[2] - $coords[0])) {
 				//if top text take it up as font size decreases, if bottom text take it down as font size decreases
 				$textCoordinateY += ($type == "top") ? - 1 : 1;
 	
-				if ($size == 10) {
+				if ($fontSize == 10) {
 			  		//if text size is reached to lower limit and still it is exceeding image width start breaking into lines
 			  		if ($type == "top") {
 						$this->topText = $this->returnMultipleLinesText($text, $type, 16);
@@ -135,13 +123,13 @@ class MemeGeneratorAction{
 						return;
 			  		}
 			  		else {
-						$this->bottomText = $this->returnMultipleLinesText($text, $type, $this->imgSize[1] - 20);
+						$this->bottomText = $this->returnMultipleLinesText($text, $type, $this->height - 20);
 						$text = $this->bottomText;
 						return;
 			  		}
 				}
 				else{
-					$size -=1;
+					$fontSize -=1;
 				}
 		  	}
 		  	else{
@@ -150,10 +138,10 @@ class MemeGeneratorAction{
 		}
 	
 		if ($type == "top"){
-		  	$this->placeTextOnImage($this->im, $size, $textCoordinateX, $textCoordinateY, $this->font, $this->topText);
+		  	$this->placeTextOnImage($fontSize, $textCoordinateX, $textCoordinateY, $this->topText);
 		}
 		else{
-		  	$this->placeTextOnImage($this->im, $size, $textCoordinateX, $textCoordinateY, $this->font, $this->bottomText);
+		  	$this->placeTextOnImage($fontSize, $textCoordinateX, $textCoordinateY, $this->bottomText);
 		}
 	}
 
@@ -164,8 +152,9 @@ class MemeGeneratorAction{
 		$finalOutput = "";
 	
 		if ($type != "top"){
-		  	$textHeight = $this->imgSize[1] - ((count($brokenText) / 2) * 3);
+		  	$textHeight = $this->height - ((count($brokenText) / 2) * 3);
 		}
+		$textCoordinateX = floor($this->width / 2);
 	
 		for ($i = 0; $i < count($brokenText); $i++) {
 			$temp = $finalOutput;
@@ -177,11 +166,10 @@ class MemeGeneratorAction{
 			$dimensions = $this->getFontPlacementCoordinates($finalOutput, 10);
 		
 			//check if the sentence (till now) is exceeding the image with new word appended
-			if ($this->checkTextWidthExceedImage($this->imgSize[0], $dimensions[2] - $dimensions[0])) { //yes it is then
+			if ($this->checkTextWidthExceedImage($this->width, $dimensions[2] - $dimensions[0])) { //yes it is then
 				// append the previous sentence not with the new word  ( new word == $brokenText[$i] )
 				$dimensions = $this->getFontPlacementCoordinates($temp, 10);
-				$locx = $this->getHorizontalTextAlignment($this->imgSize[0], $dimensions[4]);
-				$this->PlaceTextOnImage($this->im, 10, $locx, $textHeight, $this->font, $temp);
+				$this->PlaceTextOnImage(10, $textCoordinateX, $textHeight,$temp);
 				$finalOutput = $brokenText[$i];
 				$textHeight +=13;
 			}
@@ -189,8 +177,7 @@ class MemeGeneratorAction{
 			//if this is the last word append this also.The previous if will be true if the last word will have no room
 			if ($i == count($brokenText) - 1) {
 				$dimensions = $this->getFontPlacementCoordinates($finalOutput, 10);
-				$locx = $this->getHorizontalTextAlignment($this->imgSize[0], $dimensions[4]);
-				$this->PlaceTextOnImage($this->im, 10, $locx, $textHeight, $this->font, $finalOutput);
+				$this->PlaceTextOnImage(10, $textCoordinateX, $textHeight,$finalOutput);
 			}
 		}
 		return $finalOutput;

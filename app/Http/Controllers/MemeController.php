@@ -18,7 +18,7 @@ class MemeController extends Controller
         
         $meme = $memeGeneratorAction($id,$topText,$bottomText);
         header('Content-Type: image/png');
-		imagepng($meme);
+		echo Image::make($meme)->encode('png');
 	
 		imagedestroy($meme);
     }
