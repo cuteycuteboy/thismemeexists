@@ -17,15 +17,16 @@ Route::get('/', [\App\Http\Controllers\TemplateController::class, 'showTemplates
 
 Route::get('/new_template', [\App\Http\Controllers\TemplateController::class, 'showAddTemplateForm'])->name('new_template');
 Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, 'addTemplate']);
-
 Route::get('/template/{id}', [\App\Http\Controllers\TemplateController::class, 'showTemplatePage'])->name('template');
 
 Route::get('/preview_meme/{id}', [\App\Http\Controllers\MemeController::class, 'previewMeme'])->name('preview_meme');
 Route::post('/make_meme/{id}', [\App\Http\Controllers\MemeController::class, 'makeMeme'])->name('make_meme');
+Route::get('/meme/{id}', [\App\Http\Controllers\MemeController::class, 'showMemePage'])->name('meme');
 
 Route::middleware("auth:web")->group(function () {
     Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
     Route::get('/my_templates', [\App\Http\Controllers\TemplateController::class, 'showUserTemplates'])->name('my_templates');
+    Route::get('/my_memes', [\App\Http\Controllers\MemeController::class, 'showUserMemes'])->name('my_memes');
 });
 
 Route::middleware("guest:web")->group(function (){
