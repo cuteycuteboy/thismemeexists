@@ -199,7 +199,7 @@ class MemeGeneratorAction{
 	public function processImg()
 	{
 		if($this->bottomText != "") {
-		  $this->WorkOnImage($this->bottomText,30,"lower");
+		  $this->WorkOnImage($this->bottomText,30,"bottom");
 		}
 		if($this->topText != "") {
 		  $this->WorkOnImage($this->topText,30,"top");

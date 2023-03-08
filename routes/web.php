@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\TemplateController::class, 'showTemplates'])->name('home');
-
 Route::get('/new_template', [\App\Http\Controllers\TemplateController::class, 'showAddTemplateForm'])->name('new_template');
 Route::post('/new_template', [\App\Http\Controllers\TemplateController::class, 'addTemplate']);
 Route::get('/template/{id}', [\App\Http\Controllers\TemplateController::class, 'showTemplatePage'])->name('template');
