@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NewTemplateForm;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\Meme;
 use Illuminate\Support\Facades\Storage;
 use Image;
 
@@ -58,7 +59,9 @@ class TemplateController extends Controller
 
     public function showTemplatePage($id){
         $template = Template::where('id', $id)->get()->first();
-        return view("templates.view")->with('template', $template);
+        $templateId = $template->id;
+        $memesByThisTemplate = Meme::where('template_id', $templateId)->paginate(10);
+        return view("templates.view")->with('template', $template)->with('memesByThisTemplate',$memesByThisTemplate);;
     }
 
 

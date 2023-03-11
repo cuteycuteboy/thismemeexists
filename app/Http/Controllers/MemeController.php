@@ -32,20 +32,15 @@ class MemeController extends Controller
 
         $filenameToStore = uniqid().'.png';
         $filenameToStoreThumbnail = uniqid().'.png';
-        
-        imagepng($meme, storage_path('app/public/memes/') . $filenameToStore);
+        $imagePath = public_path('storage/memes/'.$filenameToStore);
+        $thumbnailPath = public_path('storage/memes_thumbnail/'.$filenameToStoreThumbnail);
 
-        $width = imagesx($meme);
-        $height = imagesy($meme);
+        $meme->save($imagePath);
 
-        $newWidth = 300;
-        $newHeight = $newWidth*$height/$width;
-
-        $memeThumbnail = imagecreatetruecolor($newWidth, $newHeight);
-
-        imagecopyresized($memeThumbnail, $meme, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-        imagepng($memeThumbnail, storage_path('app/public/memes_thumbnail/') . $filenameToStoreThumbnail);
+        $meme->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $meme->save($thumbnailPath);
 
         $save = new Meme;
         if (auth("web")->check()){
@@ -69,6 +64,8 @@ class MemeController extends Controller
     public function showMemePage($id)
     {
         $meme = Meme::where('id', $id)->get()->first();
-        return view("memes.view")->with('meme', $meme);
+        $templateId = $meme->template_id;
+        $memesByThisTemplate = Meme::where('template_id', $templateId)->paginate(10);
+        return view("memes.view")->with('meme', $meme)->with('memesByThisTemplate',$memesByThisTemplate);
     }
 }

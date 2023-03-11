@@ -3,39 +3,40 @@
 @section('title', 'thismemeexists')
 
 @section('content')
-    @include('partials.header')
-    <div class="container">
-        <div class="row justify-content-md-center pt-5">
-            <div class="col-12 col-md-5 col-xl-4 p-4">
-                <div class="shadow-lg border border-5 border-secondary">
-                    <div class="img-container">
-                    <img class="meme-img" id ="memeimg" src="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}">
-                    </div>
+@include('partials.header')
+<div class="container">
+    <div class="row justify-content-md-center pt-5">
+        <div class="col-12 col-md-5 col-xl-4 p-4">
+            <div class="shadow-lg border border-5 border-secondary">
+                <div class="img-container">
+                <img class="meme-img" id ="memeimg" src="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}">
                 </div>
             </div>
-            <div class="col col-md-auto col-xl-1"></div>
-            <div class="col-12 col-md-6 col-xl-4">
-                <div class="fs-2 mt-4">Текст мема</div>
-                <form method="POST" action="{{ route("make_meme", ['id' => $template->id]) }}">
-                    @csrf
-                    <input name="top_text" placeholder="Верхний текст" class="form-control form-control-lg mt-4" type="text" id="toptext">
-                    <input name="bottom_text" placeholder="Нижний текст" class="form-control form-control-lg mt-4" type="text" id="bottomtext">
-                    <div class="row">
-                        <div class="col col-md-auto mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">Опубликовать</button>
-                        </div>
-                        <div class="col col-md-auto mt-4">
-                            <a href="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}" download="" id="download">
-                                <button type="button" class="btn btn-secondary btn-lg">Скачать</button>
-                            </a>
-                        </div>
+        </div>
+        <div class="col col-md-auto col-xl-1"></div>
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="fs-2 mt-4">Текст мема</div>
+            <form method="POST" action="{{ route("make_meme", ['id' => $template->id]) }}">
+                @csrf
+                <input name="top_text" placeholder="Верхний текст" class="form-control form-control-lg mt-4" type="text" id="toptext">
+                <input name="bottom_text" placeholder="Нижний текст" class="form-control form-control-lg mt-4" type="text" id="bottomtext">
+                <div class="row">
+                    <div class="col col-md-auto mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Опубликовать</button>
                     </div>
-                </form>
-            </div>
+                    <div class="col col-md-auto mt-4">
+                        <a href="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}" download="" id="download">
+                            <button type="button" class="btn btn-secondary btn-lg">Скачать</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+    @include('partials.memesByThisTemplate')
+</div>
 <style>
-    .meme-img{
+    img{
         display: inline-block;
         width: 100%;
         height: auto;
