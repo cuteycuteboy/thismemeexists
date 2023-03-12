@@ -64,6 +64,9 @@ class MemeController extends Controller
     public function showMemePage($id)
     {
         $meme = Meme::where('id', $id)->get()->first();
+        if (is_null($meme)){
+            abort(404,"Мем не найден :(");
+        }
         $templateId = $meme->template_id;
         $memesByThisTemplate = Meme::where('template_id', $templateId)->paginate(10);
         return view("memes.view")->with('meme', $meme)->with('memesByThisTemplate',$memesByThisTemplate);

@@ -59,6 +59,9 @@ class TemplateController extends Controller
 
     public function showTemplatePage($id){
         $template = Template::where('id', $id)->get()->first();
+        if (is_null($template)){
+            abort(404, "Шаблон не найден :(");
+        }
         $templateId = $template->id;
         $memesByThisTemplate = Meme::where('template_id', $templateId)->paginate(10);
         return view("templates.view")->with('template', $template)->with('memesByThisTemplate',$memesByThisTemplate);;
