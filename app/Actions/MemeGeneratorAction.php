@@ -89,7 +89,17 @@ class MemeGeneratorAction{
 		}else{
 			$textCoordinateY = $this->height - $multipleLinesText[1] - round($this->height/32);
 		}
+		$px = 2;
 		foreach ($multipleLinesText[0] as $line){
+			for ($c1 = ($textCoordinateX - abs($px)); $c1 <= ($textCoordinateX + abs($px)); $c1++)
+      			for ($c2 = ($textCoordinateY - abs($px)); $c2 <= ($textCoordinateY + abs($px)); $c2++)
+					$this->im->text($line[0],$c1,$c2, function($font) use ($fontSize) {
+						$font->file($this->font);
+						$font->size($fontSize);
+						$font->color('#000000');
+						$font->align('center');
+						$font->valign('top');
+					});
 			$this->im->text($line[0],$textCoordinateX,$textCoordinateY, function($font) use ($fontSize) {
 				$font->file($this->font);
 				$font->size($fontSize);
@@ -104,7 +114,7 @@ class MemeGeneratorAction{
 	public function workOnImage($text, $type)
 	{
 
-		$maxFontSize = round(($this->height / 8) * 0.75);
+		$maxFontSize = round(($this->height / 4) * 0.75);
 		$minFontSize = 1;
 
 		while ($maxFontSize > $minFontSize + 1){
