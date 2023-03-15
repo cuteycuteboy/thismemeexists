@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\NewTemplateForm;
+use App\Http\Requests\NewTemplateRequest;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Meme;
@@ -12,7 +12,7 @@ use Image;
 
 class TemplateController extends Controller
 {
-    public function addTemplate(NewTemplateForm $request)
+    public function addTemplate(NewTemplateRequest $request)
     {    
         $data = $request->validated();
         $template = $request->file('template');

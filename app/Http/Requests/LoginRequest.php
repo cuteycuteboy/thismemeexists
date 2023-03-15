@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NewTemplateForm extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,17 @@ class NewTemplateForm extends FormRequest
     public function rules()
     {
         return [
-            'template' => ['required','image']
+            "email" => ["required", "email", "string"],
+            "password" => ["required"]
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'Введите email.',
+            'email.email' => 'Введите корректный email.',
+            'password.required' => 'Введите пароль.',
         ];
     }
 }

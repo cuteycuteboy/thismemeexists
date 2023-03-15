@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class NewTemplateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        return [
+            'template' => ['required','file','max:10240','image','dimensions:min_height=300,max_width=2000,max_width=2000']
+        ];
+    }
+
+    public function messages()
+    {
+    return [
+        'template.required' => 'Выберите изображение.',
+        'template.file' => 'Выберите изображение.',
+        'template.image'  => 'Выберите изображение.',
+        'template.max' => 'Изображение не подходит по размерам.',
+        'template.dimensions' => 'Изображение не подходит по размерам.',
+    ];
+    }
+}

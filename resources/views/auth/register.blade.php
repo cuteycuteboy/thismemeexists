@@ -20,7 +20,7 @@
       <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Пароль">
       <label for="floatingPassword">Пароль</label>
     </div>
-    <div class="form-floating">
+    <div class="form-floating mb-3">
       <input type="password" name="password_confirmation" class="form-control" id="floatingPasswordConf" placeholder="Подтверждение пароля">
       <label for="floatingPasswordConf">Подтверждение пароля</label>
     </div>

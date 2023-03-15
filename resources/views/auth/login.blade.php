@@ -13,7 +13,7 @@
       <input type="email" name="email" class="form-control" id="floatingInput" placeholder="Email">
       <label for="floatingInput">Email</label>
     </div>
-    <div class="form-floating">
+    <div class="form-floating mb-3">
       <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Пароль">
       <label for="floatingPassword">Пароль</label>
     </div>
