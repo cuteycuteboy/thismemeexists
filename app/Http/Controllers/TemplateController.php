@@ -46,14 +46,13 @@ class TemplateController extends Controller
     public function showUserTemplates(){
         $user_id = auth("web")->user()->id;
 
-        $templates = Template::where('user_id', $user_id)->get()->sortBy('id')->reverse();
+        $templates = Template::where('user_id', $user_id)->orderBy('id', 'desc')->simplePaginate(12);
         return view('templates.user')->with('templates', $templates);
     }
 
     public function showTemplates()
     {
-        $templates = Template::orderBy('id', 'desc')
-        ->paginate(10);
+        $templates = Template::orderBy('id', 'desc')->simplePaginate(12);
         return view('index')->with('templates', $templates);
     }
 
@@ -63,7 +62,7 @@ class TemplateController extends Controller
             abort(404, "Шаблон не найден :(");
         }
         $templateId = $template->id;
-        $memesByThisTemplate = Meme::where('template_id', $templateId)->paginate(10);
+        $memesByThisTemplate = Meme::where('template_id', $templateId)->orderBy('id', 'desc')->simplePaginate(12);
         return view("templates.view")->with('template', $template)->with('memesByThisTemplate',$memesByThisTemplate);;
     }
 

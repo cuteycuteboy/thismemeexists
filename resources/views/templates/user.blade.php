@@ -32,6 +32,18 @@
           </div>
           @endforeach
       </div>
+      <div class="mt-4">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination pagination-lg justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="{{ $templates->previousPageUrl() }}">Назад</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="{{ $templates->nextPageUrl() }}">Вперед</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 <style>
