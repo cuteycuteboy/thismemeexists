@@ -32,7 +32,7 @@ class MemeGeneratorAction{
 		$this->setBottomText($bottomText);
 
 		$this->processImg();
-		//dd();
+		
 		return $this->im; 
     }
 
@@ -159,7 +159,7 @@ class MemeGeneratorAction{
 
 	private function processImg()
 	{
-		$this->textMaxWidth = round($this->width*1.1);
+		$this->textMaxWidth = round($this->width*1.15);
 		$this->textMaxHeight = round($this->height * 0.2);
 
 		if($this->bottomText != '') {
