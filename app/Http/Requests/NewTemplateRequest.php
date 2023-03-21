@@ -24,7 +24,7 @@ class NewTemplateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template' => ['required','file','max:10240','image','dimensions:min_height=300,max_width=2000,max_width=2000']
+            'template' => ['required','file','max:10240','image','mimes:jpg,png,gif,bmp,webp','dimensions:min_height=300,max_width=2000,max_width=2000']
         ];
     }
 
@@ -34,6 +34,7 @@ class NewTemplateRequest extends FormRequest
         'template.required' => 'Выберите изображение.',
         'template.file' => 'Выберите изображение.',
         'template.image'  => 'Выберите изображение.',
+        'template.mimes' => 'Поддерживаются только следующие типы файлов: jpg, png, gif, bmp, webp.',
         'template.max' => 'Изображение не подходит по размерам.',
         'template.dimensions' => 'Изображение не подходит по размерам.',
     ];
