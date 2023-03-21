@@ -120,8 +120,8 @@ class MemeGeneratorAction{
 		while ($maxFontSize > $minFontSize + 1){
 			$fontSize = floor(($maxFontSize+$minFontSize) / 2);
 			$textHeight =  $this->returnMultipleLinesText($text, $fontSize)[1];
-
-			if ($textHeight <= $this->textMaxHeight){
+			$textWidth =  $this->returnMultipleLinesText($text, $fontSize)[2];
+			if (($textHeight <= $this->textMaxHeight) && (($textWidth <= $this->textMaxWidth))){
 				$minFontSize = $fontSize;
 			}else{
 				$maxFontSize = $fontSize;
@@ -136,12 +136,14 @@ class MemeGeneratorAction{
 		$linesArray = array();
 		$tmpString = '';
 		$textHeight = 0;
+		$textWidth = 0;
 		foreach ($brokenText as $word){
 			$textBox = $this->getFontPlacementCoordinates($tmpString.' '.$word, $fontSize);
 			$lineWidth = abs($textBox[4] - $textBox[0]);
 			if($lineWidth  > $this->textMaxWidth){
 				$textBox = $this->getFontPlacementCoordinates($tmpString, $fontSize);
 				$lineHeight = abs($textBox[5] - $textBox[1]);
+				$textWidth = max($textWidth, abs($textBox[4] - $textBox[0]));
 				$linesArray[] = array($tmpString,$lineHeight);
 				$textHeight += $lineHeight;
 				$tmpString = $word;
@@ -152,9 +154,10 @@ class MemeGeneratorAction{
 		}
 		$textBox = $this->getFontPlacementCoordinates($tmpString, $fontSize);
 		$lineHeight = abs($textBox[5] - $textBox[1]);
+		$textWidth = max($textWidth, abs($textBox[4] - $textBox[0]));
 		$linesArray[] = array($tmpString,$lineHeight);
 		$textHeight += $lineHeight;
-		return array($linesArray, $textHeight);
+		return array($linesArray, $textHeight, $textWidth);
 	}
 
 	private function processImg()
