@@ -24,7 +24,7 @@ class NewTemplateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template' => ['required','file','max:10240','image','mimes:jpg,png,gif,bmp,webp','dimensions:min_width=300,min_height=300,max_width=2000,max_width=2000']
+            'template' => ['required','file','max:10240','image','mimes:jpg,png,gif,bmp,webp','dimensions:min_width=300,min_height=300,max_width=2500,max_width=2500']
         ];
     }
 

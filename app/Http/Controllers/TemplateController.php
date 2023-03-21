@@ -24,6 +24,14 @@ class TemplateController extends Controller
         Storage::put('public/templates/'. $filenameToStore, fopen($template, 'r+'));
         Storage::put('public/templates_thumbnail/'. $filenameToStoreThumbnail, fopen($template, 'r+'));
 
+        $imagePath = public_path('storage/templates/'.$filenameToStore);
+        if(getimagesize($imagePath)[0] > 1024){
+            $templateImage = Image::make($imagePath)->resize(1024, null, function($constraint)
+            {
+                $constraint->aspectRatio();
+            });
+            $templateImage->save($imagePath);
+        }
         $thumbnailPath = public_path('storage/templates_thumbnail/'.$filenameToStoreThumbnail);
         $templateTumbnail = Image::make($thumbnailPath)->resize(300, null, function($constraint)
         {
