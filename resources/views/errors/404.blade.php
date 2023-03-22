@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col col-9 col-md-6 col-lg-5">
                 <div class="mb-3">
-                    <img src="{{ Vite::asset('resources/img/404cat.png') }}">
+                    <img src="{{ Vite::asset('resources/images/404cat.png') }}">
                 </div>
                 @if (isset($exception))
                 <div class="text-center fs-2">{{ $exception->getMessage() }}</div>

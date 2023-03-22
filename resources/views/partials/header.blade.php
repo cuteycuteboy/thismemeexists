@@ -17,7 +17,7 @@
         <div class="text-end">
             @guest("web")
                 <a href="{{ route("login") }}" class="btn btn-outline-light me-2">Войти</a>
-                <a href="{{ route("register") }}" class="btn btn-warning">Регистрация</a>
+                <a href="{{ route("register") }}" class="btn btn-outline-warning">Регистрация</a>
             @endguest
 
             @auth("web")
