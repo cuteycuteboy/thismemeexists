@@ -57,7 +57,7 @@ class MemeController extends Controller
     {
         $user_id = auth("web")->user()->id;
 
-        $memes = Meme::where('user_id', $user_id)->orderBy('id', 'desc')->simplePaginate(12);
+        $memes = Meme::where('user_id', $user_id)->orderBy('id', 'desc')->simplePaginate(32);
         return view('memes.user')->with('memes', $memes);
     }
 
@@ -68,7 +68,7 @@ class MemeController extends Controller
             abort(404,"Мем не найден :(");
         }
         $templateId = $meme->template_id;
-        $memesByThisTemplate = Meme::where('template_id', $templateId)->orderBy('id', 'desc')->simplePaginate(12);
+        $memesByThisTemplate = Meme::where('template_id', $templateId)->orderBy('id', 'desc')->simplePaginate(15);
         return view("memes.view")->with('meme', $meme)->with('memesByThisTemplate',$memesByThisTemplate);
     }
 }

@@ -4,30 +4,15 @@
 
 @section('content')
     @include('partials.header')
-    <div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3" id="masonry-container" data-masonry='{"percentPosition": true }' >
+    <div class="album px-4 py-5">
+    <div class="container px-2">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-4 g-3" id="masonry-container" data-masonry='{"percentPosition": true }' >
           @foreach($templates as $template)
-          <div class="col px-5 py-1">
-            <div class="card shadow-sm px-4">
-              <div class="text-center my-2">
-                <a href="{{ route('template', ['id' => $template->id]) }}">
-                  <button type="button" class="btn btn-outline-secondary mx-auto">Создать мем</button>
-                </a>
-              </div>
+          <div class="col px-3 py-1">
+            <div class="card shadow p-2">
               <a href="{{ route('template', ['id' => $template->id]) }}">
-                <img src="{{ Vite::asset('storage/app/public/templates_thumbnail/'.$template->thumbnail_path) }}">
+                <img src="{{ '/storage/templates_thumbnail/'.$template->thumbnail_path }}">
               </a>
-              <div class="card-body">
-                <p class="card-text">Тут должны быть теги, но их нет. Возможно потом реализую, но сейчас лень.</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                  </div>
-                  <small class="text-muted">9 mins</small>
-                </div>
-              </div>
             </div>
           </div>
           @endforeach
@@ -47,12 +32,11 @@
     </div>
   </div>
 <style>
-    img{
-        display: inline-block;
-        width: 100%;
-        height: auto;
-    }
-</style>
+  img{
+      display: inline-block;
+      width: 100%;
+      height: auto;
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 <script>

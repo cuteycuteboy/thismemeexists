@@ -5,16 +5,16 @@
 @section('content')
 @include('partials.header')
 <div class="container">
-    <div class="row justify-content-md-center pt-5">
+    <div class="row justify-content-md-center pt-4">
         <div class="col-12 col-md-5 col-xl-4 p-4">
-            <div class="shadow-lg border border-5 border-secondary">
-                <div class="img-container">
-                <img class="meme-img" id ="memeimg" src="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}">
+            <div class="px-4">
+                <div class="img-container shadow-lg border border-5 border-secondary">
+                    <img class="meme-img" id ="memeimg" src="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}">
                 </div>
             </div>
         </div>
         <div class="col col-md-auto col-xl-1"></div>
-        <div class="col-12 col-md-6 col-xl-4">
+        <div class="col-12 col-md-6 col-xl-4 px-4">
             <div class="fs-2 mt-4">Текст мема</div>
             <form method="POST" action="{{ route("make_meme", ['id' => $template->id]) }}">
                 @csrf
