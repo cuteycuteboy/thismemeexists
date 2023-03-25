@@ -17,6 +17,7 @@
           </div>
           @endforeach
       </div>
+      @if($templates->hasPages())
       <div class="mt-4">
         <nav aria-label="Page navigation example">
           <ul class="pagination pagination-lg justify-content-center">
@@ -29,6 +30,7 @@
           </ul>
         </nav>
       </div>
+      @endif
     </div>
   </div>
 <style>
