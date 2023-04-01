@@ -22,8 +22,20 @@ class MemeController extends Controller
             $constraint->aspectRatio();
         });
 
+        header('Content-Type: image/jpg');
+		echo Image::make($meme)->encode('jpg',90);
+	
+		$meme->destroy();
+    }
+
+    public function downloadMeme($id, Request $request, MemeGeneratorAction $memeGeneratorAction){
+        $topText = $request->input('top_text');
+        $bottomText = $request->input('bottom_text');
+        
+        $meme = $memeGeneratorAction($id,$topText,$bottomText);
+
         header('Content-Type: image/png');
-		echo Image::make($meme)->encode('png',80);
+		echo Image::make($meme)->encode('png');
 	
 		imagedestroy($meme);
     }

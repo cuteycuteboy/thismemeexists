@@ -21,6 +21,8 @@ Route::get('/template/{id}', [\App\Http\Controllers\TemplateController::class, '
 Route::get('/preview_meme/{id}', [\App\Http\Controllers\MemeController::class, 'previewMeme'])->name('preview_meme');
 Route::post('/make_meme/{id}', [\App\Http\Controllers\MemeController::class, 'makeMeme'])->name('make_meme');
 Route::get('/meme/{id}', [\App\Http\Controllers\MemeController::class, 'showMemePage'])->name('meme');
+Route::get('/download_meme/{id}', [\App\Http\Controllers\MemeController::class, 'downloadMeme'])->name('download_meme');
+
 
 Route::middleware("auth:web")->group(function () {
     Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
