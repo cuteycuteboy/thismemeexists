@@ -47,7 +47,7 @@ class TemplateController extends Controller
         $save->thumbnail_path = $filenameToStoreThumbnail;
         $save->save();
 
-        return redirect()->route('home');
+        return redirect()->route('template', ['id' => $save->id]);
         
     }
 
