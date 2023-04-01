@@ -25,7 +25,7 @@
                         <button type="submit" class="btn btn-primary btn-lg">Опубликовать</button>
                     </div>
                     <div class="col col-md-auto mt-4">
-                        <a href="{{ '/preview_meme/'.$template->id.'?top_text=&bottom_text='}}" download="" id="download">
+                        <a href="{{ '/download_meme/'.$template->id.'?top_text=&bottom_text='}}" download="" id="download">
                             <button type="button" class="btn btn-secondary btn-lg">Скачать</button>
                         </a>
                     </div>
@@ -45,11 +45,11 @@
 <script>
 toptext.oninput = function() {
 memeimg.src=memeimg.src.split("?")[0] + "?top_text=" + toptext.value + "&bottom_text=" + bottomtext.value;
-download.setAttribute("href", memeimg.src);
+download.setAttribute("href", "/download_meme/{{$template->id}}?"+"top_text="+toptext.value+"&bottom_text="+bottomtext.value);
 };
 bottomtext.oninput = function() {
 memeimg.src=memeimg.src.split("?")[0] + "?top_text=" + toptext.value + "&bottom_text=" + bottomtext.value;
-download.setAttribute("href", memeimg.src);
+download.setAttribute("href", "/download_meme/{{$template->id}}?"+"top_text="+toptext.value+"&bottom_text="+bottomtext.value);
 };
 </script>
 @endsection
