@@ -17,8 +17,13 @@ class MemeController extends Controller
         $bottomText = $request->input('bottom_text');
         
         $meme = $memeGeneratorAction($id,$topText,$bottomText);
+
+        $meme->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
         header('Content-Type: image/png');
-		echo Image::make($meme)->encode('png');
+		echo Image::make($meme)->encode('png',80);
 	
 		imagedestroy($meme);
     }
