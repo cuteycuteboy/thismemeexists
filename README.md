@@ -8,6 +8,7 @@ This Meme Exists - генератор мемов на Laravel+Intervention/Image
 
 ## Демоверсия
 Демоверсия - http://thismemeexists.ru/
+( на данный момент она не ворк, хостинг закончился)
 
 ## Установка
 
